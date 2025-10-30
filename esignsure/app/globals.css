@@ -1,0 +1,90 @@
+
+/* Color Variables */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Layout and Reset Styles */
+html, body {
+  max-width: 100vw;
+  /* overflow-x: auto; */
+  margin: 0;
+  padding: 0;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Inter", sans-serif!important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  /* height: 100%; */
+}
+
+/* Ensure Full Height on Every Screen */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+   font-family: "Inter", sans-serif!important;
+}
+
+/* Stretch Main to Take Remaining Height */
+main {
+  flex: 1;
+}
+
+/* Reset Default Styles */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* Anchor Tag Reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Responsive Typography */
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+/* Ensure Images Don't Overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Utility to Debug Overflow Issues */
+.debug * {
+  outline: 1px solid red; /* Apply .debug to check overflowing elements */
+}
+
+.document-rows:hover {
+          background-color: #f8fafc!important;
+        }
+
+.table-hovers  :hover{
+          background-color: #f8fafc!important;
+}
