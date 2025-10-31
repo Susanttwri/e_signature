@@ -51,9 +51,10 @@ const inter = Inter({
   variable: "--font-inter",
 });
 const brand = process.env.NEXT_PUBLIC_BRAND_NAME;
-export const metadata: Metadata = {
-  title: brand,
-  description: "Document Signature Application",
+export const metadata = {
+  title: "eSignSure | Fast, Secure & Legally-Binding Online eSignature Software",
+  description:
+    "Simplify your document workflows with eSignSure. Send contracts, collect legally-binding eSignatures, and track status instantly — all in one secure platform.",
 };
 
 export default function RootLayout({

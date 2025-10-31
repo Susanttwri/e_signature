@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Free from '@/public/assets/documentsimage.png'
 // import './HeroBanner.css' // Add custom styles if needed
 import Image from 'next/image'
-import Logo from '@/public/assets/logo2.png'
+import Logo from '@/public/assets/esignsure500_wt.png'
 function HeroBanner() {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter();
