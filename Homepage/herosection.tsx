@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { Container, Row, Col, Button, Card, Badge } from 'react-bootstrap';
 import Image from 'next/image';
-import DocImage from '@/public/assets/docuesign_snap1.jpg';
+import DocImage from '@/public/assets/docuesign_snap2.jpg';
 import { FaFileContract, FaBuilding, FaHospitalUser, FaBalanceScale, FaUniversity, FaUserTie, FaGraduationCap } from "react-icons/fa";
 
 
