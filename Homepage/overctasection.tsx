@@ -35,7 +35,7 @@ function CtaSection() {
 
             {/* Highlighted CTA text */}
          <p className="highlight-box mx-auto mb-4 px-4 py-3 fw-semibold">
-  Start your free trial today & <strong>get 10 document credits free!</strong> 
+  Start your free trial today & <strong>Get 10 document credits free!</strong> 
 </p>
 
 

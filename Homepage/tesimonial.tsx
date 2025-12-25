@@ -6,8 +6,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-const brand = process.env.NEXT_PUBLIC_BRAND_NAME;
+
 const TestimonialCarousel = () => {
+  const brand = process.env.NEXT_PUBLIC_BRAND_NAME || 'eSignSure';
   const testimonials = [
     {
       id: 1,

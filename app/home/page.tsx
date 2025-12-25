@@ -19,6 +19,7 @@ import HeroSection from '@/Homepage/herosection';
 import Steps from '@/Homepage/steps';
 import TestimonialCarousel from '@/Homepage/tesimonial';
 import Pricing from '@/Homepage/price';
+import SecuritySection from '@/Homepage/security';
 import CtaSection from '@/Homepage/overctasection';
 import Footer from '@/Homepage/footer';
 function Homepage() {
@@ -70,7 +71,7 @@ function Homepage() {
         <Steps />
         <TestimonialCarousel />
         <Pricing />
-        {/* <SecurityCompliance /> */}
+        <SecuritySection />
         <CtaSection />
         <Footer />
 
