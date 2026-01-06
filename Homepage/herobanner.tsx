@@ -70,7 +70,7 @@ function HeroBanner() {
               className="hero-title mb-4 text-white fw-bold"
               style={{ fontSize: '3.2rem', lineHeight: '1.3' }}
             >
-             Get Your Documents Signed in Mintues
+             Get Your Documents Signed in Minutes
             </h1>
 
             <p
