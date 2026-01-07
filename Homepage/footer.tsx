@@ -72,7 +72,7 @@ export default function Footer() {
                 <FontAwesomeIcon icon={faYoutube} size="lg" />
               </Link>
               <Link
-                href="https://www.instagram.com/docuesign/"
+                href="https://www.instagram.com/esignsure/"
                 className="text-white social-icon"
               >
                 <FontAwesomeIcon icon={faInstagram} size="lg" />
