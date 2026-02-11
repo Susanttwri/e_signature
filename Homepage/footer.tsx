@@ -48,15 +48,21 @@ export default function Footer() {
           <Col md={6}>
             <div className="d-flex justify-content-md-end gap-4">
               <Link
-                href="https://www.facebook.com/profile.php?id=61578873841367"
+                href="https://www.facebook.com/esignsure"
                 className="text-white social-icon"
               >
                 <FontAwesomeIcon icon={faFacebookF} size="lg" />
               </Link>
               <Link
-                href="https://www.linkedin.com/company/appyminds"
+                href="https://www.linkedin.com/company/esignsure"
                 className="text-white social-icon"
               >
+              <Link
+                href="https://www.instagram.com/esignsure/"
+                className="text-white social-icon"
+              >
+                <FontAwesomeIcon icon={faInstagram} size="lg" />
+              </Link>                
                 <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
               </Link>
               <Link
@@ -70,12 +76,6 @@ export default function Footer() {
                 className="text-white social-icon"
               >
                 <FontAwesomeIcon icon={faYoutube} size="lg" />
-              </Link>
-              <Link
-                href="https://www.instagram.com/esignsure/"
-                className="text-white social-icon"
-              >
-                <FontAwesomeIcon icon={faInstagram} size="lg" />
               </Link>
             </div>
           </Col>
