@@ -57,14 +57,14 @@ export default function Footer() {
                 href="https://www.linkedin.com/company/esignsure"
                 className="text-white social-icon"
               >
+                <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
+              </Link>
               <Link
                 href="https://www.instagram.com/esignsure/"
                 className="text-white social-icon"
               >
                 <FontAwesomeIcon icon={faInstagram} size="lg" />
               </Link>                
-                <FontAwesomeIcon icon={faLinkedinIn} size="lg" />
-              </Link>
               <Link
                 href="#"
                 className="text-white social-icon"
