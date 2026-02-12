@@ -10,7 +10,7 @@ import { FaFileContract, FaBuilding, FaHospitalUser, FaBalanceScale, FaUniversit
 function HeroSection() {
   const router = useRouter();
   const handleOnHandle= () =>{
-  router.push('/sign-up');
+  router.push('https://app.esignsure.com/sign-up');
 }
   return (
     <div className=" container-fluid  py-5" style={{background:"#ebebeb99"}}>
