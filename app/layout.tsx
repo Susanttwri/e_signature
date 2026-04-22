@@ -59,6 +59,7 @@ export const metadata = {
 
 import GlobalNavbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BackToTop from '@/components/BackToTop';
 
 export default function RootLayout({
   children,
@@ -80,6 +81,7 @@ export default function RootLayout({
           <main style={{ minHeight: 'calc(100vh - 100px)' }}>
             {children}
           </main>
+          <BackToTop />
           <Footer />
       </body>
     </html>
