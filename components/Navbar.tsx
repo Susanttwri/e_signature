@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Container, Button, Navbar, Nav } from 'react-bootstrap'
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link'
 import Logo from '@/public/assets/esignsure500_wt.png'
@@ -9,6 +9,7 @@ import Logo from '@/public/assets/esignsure500_wt.png'
 export default function GlobalNavbar() {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleOnClick = () => {
     router.push('https://app.esignsure.com/login');
@@ -31,6 +32,8 @@ export default function GlobalNavbar() {
     }
   }, [scrolled])
 
+  const isActive = (path: string) => pathname === path;
+
   return (
     <>
       {/* Modern Fixed Navbar */}
@@ -52,10 +55,10 @@ export default function GlobalNavbar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mx-auto fw-semibold" style={{ fontSize: '1.1rem' }}>
-              <Nav.Link as={Link} href="/" className="text-white px-3">Home</Nav.Link>
-              <Nav.Link as={Link} href="/about" className="text-white px-3">About Us</Nav.Link>
-              <Nav.Link as={Link} href="/faq" className="text-white px-3">FAQ</Nav.Link>
-              <Nav.Link as={Link} href="/resources" className="text-white px-3">Resources</Nav.Link>
+              <Nav.Link as={Link} href="/" className={`px-3 ${isActive('/') ? 'text-warning' : 'text-white'}`}>Home</Nav.Link>
+              <Nav.Link as={Link} href="/about" className={`px-3 ${isActive('/about') ? 'text-warning' : 'text-white'}`}>About Us</Nav.Link>
+              <Nav.Link as={Link} href="/faq" className={`px-3 ${isActive('/faq') ? 'text-warning' : 'text-white'}`}>FAQ</Nav.Link>
+              <Nav.Link as={Link} href="/resources" className={`px-3 ${isActive('/resources') ? 'text-warning' : 'text-white'}`}>Resources</Nav.Link>
             </Nav>
             <div className="d-flex align-items-center mt-3 mt-lg-0">
               <Button 
