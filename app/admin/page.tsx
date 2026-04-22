@@ -1,120 +1,72 @@
 'use client';
-import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Card } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileLines, faEye, faUser, faClock } from '@fortawesome/free-solid-svg-icons';
 
-export default function AdminPanel() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const router = useRouter();
+export default function AdminDashboard() {
+  const [stats, setStats] = useState({
+    total: 0,
+    published: 0,
+    drafts: 0
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
-    setError('');
+  useEffect(() => {
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(posts => {
+        if (Array.isArray(posts)) {
+          setStats({
+            total: posts.length,
+            published: posts.filter((p: any) => p.status === 'Published').length,
+            drafts: posts.filter((p: any) => p.status === 'Draft').length
+          });
+        }
+      })
+      .catch(err => console.error('Error fetching stats:', err));
+  }, []);
 
-    try {
-      const res = await fetch('/api/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, author, imageUrl }),
-      });
-
-      if (!res.ok) throw new Error('Failed to create post');
-
-      setMessage('Post created successfully!');
-      setTitle('');
-      setContent('');
-      setAuthor('');
-      setImageUrl('');
-      
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const statCards = [
+    { title: 'Total Articles', value: stats.total, icon: faFileLines, color: '#0d6efd' },
+    { title: 'Published', value: stats.published, icon: faEye, color: '#198754' },
+    { title: 'Drafts', value: stats.drafts, icon: faClock, color: '#ffc107' },
+    { title: 'Total Authors', value: 1, icon: faUser, color: '#6f42c1' },
+  ];
 
   return (
-    <div className="py-5" style={{ background: '#f4f6f9', minHeight: '100vh' }}>
-      <Container className="my-5">
-        <div className="mx-auto" style={{ maxWidth: '700px' }}>
-          <Card className="shadow-sm border-0" style={{ borderRadius: '15px' }}>
-            <Card.Body className="p-5">
-              <h2 className="fw-bold mb-4 text-center" style={{ color: '#0048d7' }}>Admin Panel</h2>
-              <p className="text-center text-muted mb-4">Create a new blog post for the Resources page.</p>
-
-              {message && <Alert variant="success">{message}</Alert>}
-              {error && <Alert variant="danger">{error}</Alert>}
-
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Post Title</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    placeholder="Enter post title" 
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                    style={{ padding: '12px' }}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Author</Form.Label>
-                  <Form.Control 
-                    type="text" 
-                    placeholder="Enter author name" 
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    style={{ padding: '12px' }}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-semibold">Image URL (Optional)</Form.Label>
-                  <Form.Control 
-                    type="url" 
-                    placeholder="https://example.com/image.jpg" 
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    style={{ padding: '12px' }}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-4">
-                  <Form.Label className="fw-semibold">Content</Form.Label>
-                  <Form.Control 
-                    as="textarea" 
-                    rows={8} 
-                    placeholder="Write your article content here..." 
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    required
-                    style={{ padding: '12px' }}
-                  />
-                </Form.Group>
-
-                <Button 
-                  variant="primary" 
-                  type="submit" 
-                  className="w-100" 
-                  disabled={loading}
-                  style={{ padding: '12px', borderRadius: '50px', fontSize: '1.1rem', fontWeight: '600' }}
+    <div>
+      <Row>
+        {statCards.map((card, idx) => (
+          <Col md={3} key={idx} className="mb-4">
+            <Card className="border-0 shadow-sm h-100" style={{ borderRadius: '15px' }}>
+              <Card.Body className="d-flex align-items-center p-4">
+                <div 
+                  className="rounded-circle d-flex align-items-center justify-content-center me-3" 
+                  style={{ width: '60px', height: '60px', background: `${card.color}15`, color: card.color }}
                 >
-                  {loading ? 'Publishing...' : 'Publish Post'}
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </div>
-      </Container>
+                  <FontAwesomeIcon icon={card.icon} size="lg" />
+                </div>
+                <div>
+                  <h6 className="text-muted small mb-1">{card.title}</h6>
+                  <h3 className="fw-bold mb-0">{card.value}</h3>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+
+      <Card className="border-0 shadow-sm mt-2" style={{ borderRadius: '15px' }}>
+        <Card.Body className="p-4 text-center py-5">
+           <h4 className="fw-bold mb-3">Welcome to the EduCtrl CRM Admin</h4>
+           <p className="text-muted mx-auto" style={{ maxWidth: '600px' }}>
+             Use the sidebar to manage your blog articles, update resources, and keep your website content fresh.
+           </p>
+           <div className="mt-4">
+             <img src="https://cdni.iconscout.com/illustration/premium/thumb/web-development-dashboard-illustration-download-in-svg-png-gif-formats--website-analytic-online-seo-business-and-management-pack-illustrations-3310036.png" alt="Dashboard" style={{ maxWidth: '100%', height: '300px', objectFit: 'contain' }} />
+           </div>
+        </Card.Body>
+      </Card>
     </div>
   );
 }

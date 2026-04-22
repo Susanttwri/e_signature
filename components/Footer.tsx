@@ -1,4 +1,5 @@
 'use client'
+import { usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPhone,
@@ -18,6 +19,9 @@ import Image from "next/image";
 
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <footer className="footer  text-white py-3">
       <Container>

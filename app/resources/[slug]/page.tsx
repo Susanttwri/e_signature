@@ -81,9 +81,11 @@ export default function BlogPost() {
             </div>
           )}
 
-          <div className="fs-5 text-dark pb-5 border-bottom" style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
-            {post.content}
-          </div>
+          <div 
+            className="fs-5 text-dark pb-5 border-bottom article-content" 
+            style={{ lineHeight: '1.8' }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
 
           {/* Related Articles Section */}
           {relatedPosts.length > 0 && (
@@ -122,6 +124,26 @@ export default function BlogPost() {
           )}
         </div>
       </Container>
+      <style jsx global>{`
+        .article-content h1, .article-content h2, .article-content h3 {
+          margin-top: 2rem;
+          margin-bottom: 1rem;
+          font-weight: 700;
+          color: #182848;
+        }
+        .article-content img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 10px;
+          margin: 2rem 0;
+        }
+        .article-content ul, .article-content ol {
+          margin-bottom: 1.5rem;
+        }
+        .article-content p {
+          margin-bottom: 1.25rem;
+        }
+      `}</style>
     </div>
   );
 }

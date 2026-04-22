@@ -11,6 +11,8 @@ export default function GlobalNavbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  if (pathname?.startsWith('/admin')) return null;
+
   const handleOnClick = () => {
     router.push('https://app.esignsure.com/login');
   };

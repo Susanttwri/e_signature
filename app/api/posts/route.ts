@@ -27,7 +27,10 @@ export async function POST(request: Request) {
       ...postData,
       id: Date.now().toString(),
       slug,
-      createdAt: new Date().toISOString()
+      type: postData.type || 'Blog',
+      status: postData.status || 'Published',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
     let posts = [];

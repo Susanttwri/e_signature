@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { usePathname } from 'next/navigation';
 
 export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false)
+  const pathname = usePathname();
+
+  if (pathname?.startsWith('/admin')) return null;
 
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
