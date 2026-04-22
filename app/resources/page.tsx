@@ -2,9 +2,8 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf, faBook, faCode, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faFilePdf, faBook, faCode, faArrowRight, faDownload, faShieldHeart, faBolt } from '@fortawesome/free-solid-svg-icons';
 
 export default function Resources() {
   const [posts, setPosts] = useState([]);
@@ -14,7 +13,9 @@ export default function Resources() {
     fetch('/api/posts')
       .then(res => res.json())
       .then(data => {
-        setPosts(data);
+        if (Array.isArray(data)) {
+           setPosts(data);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -24,9 +25,12 @@ export default function Resources() {
   }, []);
 
   const staticResources = [
-    { title: 'eSignature Guide 2026', icon: faBook, color: '#0d6efd', link: '#' },
-    { title: 'API Documentation', icon: faCode, color: '#198754', link: '#' },
-    { title: 'Security Whitepaper', icon: faFilePdf, color: '#dc3545', link: '#' },
+    { title: 'eSignature Guide 2026', icon: faBook, color: '#0d6efd', desc: 'The complete handbook for digital signature compliance.' },
+    { title: 'API Documentation', icon: faCode, color: '#198754', desc: 'Integrate eSignSure into your platform in minutes.' },
+    { title: 'Security Whitepaper', icon: faFilePdf, color: '#dc3545', desc: 'Learn how we protect your sensitive data.' },
+    { title: 'Compliance Toolkit', icon: faShieldHeart, color: '#6f42c1', desc: 'Everything you need for legal readiness.' },
+    { title: 'Fast Track Onboarding', icon: faBolt, color: '#ffc107', desc: 'Quick start guide for new enterprise users.' },
+    { title: 'PDF Utility Tools', icon: faDownload, color: '#fd7e14', desc: 'Free tools to merge and compress your documents.' },
   ];
 
   return (
@@ -34,9 +38,10 @@ export default function Resources() {
       {/* Header */}
       <Container className="my-5 pt-4">
         <div className="text-center mb-5">
-          <h1 className="fw-bold display-4 mb-3" style={{ color: '#182848' }}>Resources & Blog</h1>
+          <span className="badge bg-primary text-white px-3 py-2 rounded-pill mb-3 fw-bold">KNOWLEDGE HUB</span>
+          <h1 className="fw-bold display-4 mb-3" style={{ color: '#182848' }}>Resources & <span className="text-primary">Insights</span></h1>
           <p className="text-muted fs-5 mx-auto" style={{ maxWidth: '700px' }}>
-            Discover guides, technical documentation, and the latest insights to help you get the most out of eSignSure.
+            Expert guides, technical documentation, and the latest industry trends to help you master digital document workflows.
           </p>
         </div>
 
@@ -46,16 +51,17 @@ export default function Resources() {
           <Row>
             {staticResources.map((res, idx) => (
               <Col lg={4} md={6} className="mb-4" key={idx}>
-                <Card className="resource-card h-100 shadow-sm border-0 d-flex flex-row align-items-center p-4">
-                  <div className="icon-box me-4" style={{ backgroundColor: `${res.color}15`, color: res.color }}>
-                    <FontAwesomeIcon icon={res.icon} size="2x" />
+                <Card className="resource-card h-100 shadow-sm border-0 p-4">
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="icon-box me-3 shadow-sm" style={{ backgroundColor: `${res.color}15`, color: res.color }}>
+                      <FontAwesomeIcon icon={res.icon} size="lg" />
+                    </div>
+                    <h5 className="fw-bold mb-0">{res.title}</h5>
                   </div>
-                  <div>
-                    <h5 className="fw-bold mb-1">{res.title}</h5>
-                    <Link href={res.link} className="text-decoration-none fw-semibold" style={{ color: res.color }}>
-                      Download <FontAwesomeIcon icon={faArrowRight} className="ms-1" />
-                    </Link>
-                  </div>
+                  <Card.Text className="text-muted small mb-3">{res.desc}</Card.Text>
+                  <Link href="#" className="text-decoration-none fw-bold mt-auto" style={{ color: res.color, fontSize: '0.85rem' }}>
+                    Access Now <FontAwesomeIcon icon={faArrowRight} className="ms-1" />
+                  </Link>
                 </Card>
               </Col>
             ))}
@@ -64,7 +70,10 @@ export default function Resources() {
 
         {/* Blog Section */}
         <div className="mt-5">
-          <h2 className="fw-bold mb-4" style={{ color: '#0048d7' }}>Latest Articles</h2>
+          <div className="d-flex justify-content-between align-items-end mb-4">
+            <h2 className="fw-bold mb-0" style={{ color: '#0048d7' }}>Latest Articles</h2>
+            <Link href="/admin/articles" className="text-decoration-none small fw-bold">Manage Posts &rarr;</Link>
+          </div>
           
           {loading ? (
             <div className="text-center my-5 py-5">
@@ -76,7 +85,7 @@ export default function Resources() {
             <Row>
               {posts.length === 0 ? (
                 <Col>
-                  <div className="text-center text-muted my-5 p-5 bg-white rounded shadow-sm">
+                  <div className="text-center text-muted my-5 p-5 bg-white rounded-4 shadow-sm border border-dashed">
                     <h4>No posts found.</h4>
                     <p>Check back later for new content!</p>
                   </div>
@@ -85,13 +94,12 @@ export default function Resources() {
                 posts.map((post: any) => (
                   <Col lg={4} md={6} className="mb-4" key={post.id}>
                     <Card className="blog-card shadow-sm border-0 h-100 position-relative">
-                      {/* Image Container with 1:1 aspect ratio to form a square box feel */}
                       <div className="card-img-wrapper">
                         {post.imageUrl ? (
                           <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
                           <div className="w-100 h-100 d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)' }}>
-                            <span className="text-muted fw-semibold">No Image</span>
+                            <span className="text-muted fw-semibold">eSignSure News</span>
                           </div>
                         )}
                         <div className="overlay d-flex flex-column justify-content-end p-4">
@@ -122,30 +130,26 @@ export default function Resources() {
 
       <style jsx global>{`
         .resource-card {
-          border-radius: 16px;
+          border-radius: 20px;
           transition: all 0.3s ease;
-          cursor: pointer;
+          border: 1px solid rgba(0,0,0,0.03) !important;
         }
         .resource-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important;
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
         }
         .icon-box {
-          min-width: 64px;
-          height: 64px;
-          border-radius: 16px;
+          min-width: 50px;
+          height: 50px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: all 0.3s ease;
         }
-        .resource-card:hover .icon-box {
-          transform: scale(1.1);
-        }
 
-        /* Blog Card Styling */
         .blog-card {
-          border-radius: 20px;
+          border-radius: 24px;
           overflow: hidden;
           aspect-ratio: 1 / 1;
         }
