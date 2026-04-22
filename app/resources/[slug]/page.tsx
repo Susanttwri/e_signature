@@ -64,7 +64,7 @@ export default function BlogPost() {
 
           {post.imageUrl && (
             <div className="mb-5" style={{ position: 'relative', height: '400px', borderRadius: '15px', overflow: 'hidden' }}>
-              <Image src={post.imageUrl} alt={post.title} fill style={{ objectFit: 'cover' }} />
+              <img src={post.imageUrl} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           )}
 
