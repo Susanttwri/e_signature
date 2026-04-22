@@ -31,31 +31,6 @@ function HeroBanner() {
 
   return (
     <>
-      {/* Modern Fixed Navbar */}
-      <nav className={`fixed-top py-3 ${scrolled ? ' shadow-sm' : ''} transition-all`} style={{ transition: 'all 0.3s ease', background: "linear-gradient(135deg, rgb(82, 128, 233) 0%, rgb(22 87 220) 100%)" }}>
-         <Container> 
-          <Row className="align-items-center">
-             <Col xs={6}> {/* Modern Logo with hover effect */} 
-             <div className="nav-logo-container"> 
-              <Image src={Logo} alt="Company Logo" width={150} height={80} className="img-fluid" />
-               </div> 
-               </Col> 
-               <Col xs={6} className="text-end ">
-               <Button 
-  variant="outline-light" 
-  className="me-3 nav-button d-none d-sm-inline-block"  
-  onClick={() => handleOnClick()} 
-  style={{ borderRadius: '50px', padding: '12px 24px', borderWidth: '2px', fontWeight: '600' }} 
->
-  Login
-</Button>
-
-                <Button variant="light" className="nav-button" onClick={() => handleOnHandle()} style={{ borderRadius: '50px', padding: '12px 24px', fontWeight: '600', color: '#0d6efd' }} > Get Started </Button>
-               </Col>
-            </Row>
-         </Container>
-      </nav>
-
       {/* Hero Banner */}
       <Container fluid className={`hero-banner d-flex align-items-center justify-content-center text-center pb-5 ${scrolled ? 'pt-0' : ''}`}
         style={{

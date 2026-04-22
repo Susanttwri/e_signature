@@ -21,7 +21,6 @@ import TestimonialCarousel from '@/Homepage/tesimonial';
 import Pricing from '@/Homepage/price';
 import SecuritySection from '@/Homepage/security';
 import CtaSection from '@/Homepage/overctasection';
-import Footer from '@/Homepage/footer';
 function Homepage() {
   return (
     <>
@@ -106,7 +105,6 @@ function Homepage() {
         <Pricing />
         <SecuritySection />
         <CtaSection />
-        <Footer />
 
         {/* Statcounter Script */}
         <Script id="statcounter-init" strategy="afterInteractive">

@@ -57,6 +57,9 @@ export const metadata = {
     "Simplify your document workflows with eSignSure. Send contracts, collect legally-binding eSignatures, and track status instantly — all in one secure platform.",
 };
 
+import GlobalNavbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,7 +76,11 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-          {children}
+          <GlobalNavbar />
+          <main style={{ minHeight: 'calc(100vh - 100px)' }}>
+            {children}
+          </main>
+          <Footer />
       </body>
     </html>
   );
