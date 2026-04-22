@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Row, Col, Card, Spinner } from 'react-bootstrap';
 import dynamic from 'next/dynamic';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUpload, faTimes } from '@fortawesome/free-solid-svg-icons';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { 
@@ -14,10 +16,15 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
     title: '',
     author: '',
     imageUrl: '',
+    shortDescription: '',
     content: '',
     type: 'Blog',
-    status: 'Published'
+    status: 'Published',
+    metaTitle: '',
+    metaDescription: ''
   });
+
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -35,6 +42,31 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
 
   const handleEditorChange = (content: string) => {
     setFormData(prev => ({ ...prev, content }));
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const data = new FormData();
+    data.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: data
+      });
+      const result = await res.json();
+      if (result.url) {
+        setFormData(prev => ({ ...prev, imageUrl: result.url }));
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,7 +105,21 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
               </Form.Group>
 
               <Form.Group className="mb-4">
-                <Form.Label className="fw-bold">Content</Form.Label>
+                <Form.Label className="fw-bold">Short Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleChange}
+                  placeholder="Write a brief summary for the card preview..."
+                  className="border-2"
+                  style={{ borderRadius: '10px' }}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">Main Content</Form.Label>
                 <div className="editor-container">
                    <ReactQuill 
                      theme="snow"
@@ -86,6 +132,33 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
               </Form.Group>
             </Card.Body>
           </Card>
+
+          {/* SEO Section */}
+          <Card className="border-0 shadow-sm mb-4" style={{ borderRadius: '15px' }}>
+            <Card.Body className="p-4">
+              <h6 className="fw-bold mb-3">SEO Metadata</h6>
+              <Form.Group className="mb-3">
+                <Form.Label className="small fw-bold">Meta Title</Form.Label>
+                <Form.Control
+                  name="metaTitle"
+                  value={formData.metaTitle}
+                  onChange={handleChange}
+                  placeholder="SEO Title (recommended < 60 chars)"
+                />
+              </Form.Group>
+              <Form.Group className="mb-0">
+                <Form.Label className="small fw-bold">Meta Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={2}
+                  name="metaDescription"
+                  value={formData.metaDescription}
+                  onChange={handleChange}
+                  placeholder="SEO Description (recommended < 160 chars)"
+                />
+              </Form.Group>
+            </Card.Body>
+          </Card>
         </Col>
 
         <Col lg={4}>
@@ -93,6 +166,45 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
             <Card.Body className="p-4">
               <h6 className="fw-bold mb-3 border-bottom pb-2">Publish Settings</h6>
               
+              <Form.Group className="mb-4">
+                <Form.Label className="small fw-bold">Featured Image</Form.Label>
+                <div 
+                  className="upload-box border-2 border-dashed rounded-3 p-0 text-center position-relative"
+                  style={{ border: '2px dashed #dee2e6', cursor: 'pointer', background: '#f8f9fa', minHeight: '180px' }}
+                >
+                  {uploading ? (
+                    <div className="py-5">
+                      <Spinner animation="border" size="sm" className="me-2 text-primary" />
+                      <span className="small">Uploading...</span>
+                    </div>
+                  ) : formData.imageUrl ? (
+                    <div className="position-relative">
+                      <img src={formData.imageUrl} alt="Featured" className="w-100 rounded shadow-sm" style={{ height: '180px', objectFit: 'cover' }} />
+                      <Button 
+                        variant="danger" 
+                        size="sm" 
+                        className="position-absolute top-0 end-0 m-2 rounded-circle border-0 shadow"
+                        onClick={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="py-5 text-muted">
+                      <FontAwesomeIcon icon={faUpload} size="2x" className="mb-2 opacity-50" />
+                      <div className="small fw-bold">Click to upload image</div>
+                      <div className="text-smaller opacity-75">JPG, PNG or GIF (Max 5MB)</div>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer"
+                        onChange={handleFileUpload}
+                      />
+                    </div>
+                  )}
+                </div>
+              </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label className="small fw-bold">Author Name</Form.Label>
                 <Form.Control
@@ -121,30 +233,14 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
                 </Form.Select>
               </Form.Group>
 
-              <Form.Group className="mb-4">
-                <Form.Label className="small fw-bold">Featured Image URL</Form.Label>
-                <Form.Control
-                  name="imageUrl"
-                  value={formData.imageUrl}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                  style={{ borderRadius: '8px' }}
-                />
-                {formData.imageUrl && (
-                   <div className="mt-3 rounded overflow-hidden shadow-sm" style={{ height: '160px' }}>
-                     <img src={formData.imageUrl} alt="Preview" className="w-100 h-100 object-fit-cover" />
-                   </div>
-                )}
-              </Form.Group>
-
               <Button 
                 variant="primary" 
                 type="submit" 
-                disabled={loading} 
+                disabled={loading || uploading} 
                 className="w-100 py-2 fw-bold shadow-sm"
                 style={{ borderRadius: '10px' }}
               >
-                {loading ? 'Processing...' : initialData ? 'Update Article' : 'Publish Article'}
+                {loading ? 'Saving...' : initialData ? 'Update Article' : 'Publish Article'}
               </Button>
               
               <Button 
@@ -171,6 +267,7 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
           border-top-right-radius: 10px;
           background: #f8f9fa;
         }
+        .text-smaller { font-size: 0.75rem; }
       `}</style>
     </Form>
   );

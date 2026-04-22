@@ -61,6 +61,7 @@ export default function GlobalNavbar() {
               <Nav.Link as={Link} href="/about" className={`px-3 ${isActive('/about') ? 'text-warning' : 'text-white'}`}>About Us</Nav.Link>
               <Nav.Link as={Link} href="/faq" className={`px-3 ${isActive('/faq') ? 'text-warning' : 'text-white'}`}>FAQ</Nav.Link>
               <Nav.Link as={Link} href="/resources" className={`px-3 ${isActive('/resources') ? 'text-warning' : 'text-white'}`}>Resources</Nav.Link>
+              <Nav.Link as={Link} href="/blog" className={`px-3 ${isActive('/blog') ? 'text-warning' : 'text-white'}`}>Blog</Nav.Link>
             </Nav>
             <div className="d-flex align-items-center mt-3 mt-lg-0">
               <Button 
