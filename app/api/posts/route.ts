@@ -20,6 +20,19 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const postData = await request.json();
+    if (
+      !postData?.title ||
+      !postData?.shortDescription ||
+      !postData?.content ||
+      !postData?.metaTitle ||
+      !postData?.metaDescription ||
+      !postData?.imageUrl
+    ) {
+      return NextResponse.json(
+        { error: 'Title, short description, content, image, meta title and meta description are required.' },
+        { status: 400 }
+      );
+    }
     
     // Generate a simple slug
     const slug = postData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');

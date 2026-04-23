@@ -13,7 +13,7 @@ export default function Blog() {
       .then(data => {
         if (Array.isArray(data)) {
            // Filter specifically for "Blog" type
-           setPosts(data.filter((p: any) => p.type === 'Blog' || !p.type));
+           setPosts(data.filter((p: any) => (p.type === 'Blog' || !p.type) && p.status === 'Published'));
         }
         setLoading(false);
       })

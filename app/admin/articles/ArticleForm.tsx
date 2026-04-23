@@ -11,14 +11,14 @@ const ReactQuill = dynamic(() => import('react-quill'), {
   loading: () => <div className="p-5 text-center border rounded">Loading Editor...</div>
 });
 
-export default function ArticleForm({ initialData, onSubmit, loading }: any) {
+export default function ArticleForm({ initialData, onSubmit, loading, defaultType = 'Blog' }: any) {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
     imageUrl: '',
     shortDescription: '',
     content: '',
-    type: 'Blog',
+    type: defaultType,
     status: 'Published',
     metaTitle: '',
     metaDescription: ''
@@ -32,8 +32,10 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
         ...prev,
         ...initialData
       }));
+    } else {
+      setFormData((prev) => ({ ...prev, type: defaultType }));
     }
-  }, [initialData]);
+  }, [initialData, defaultType]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -144,6 +146,7 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
                   value={formData.metaTitle}
                   onChange={handleChange}
                   placeholder="SEO Title (recommended < 60 chars)"
+                  required
                 />
               </Form.Group>
               <Form.Group className="mb-0">
@@ -155,6 +158,7 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
                   value={formData.metaDescription}
                   onChange={handleChange}
                   placeholder="SEO Description (recommended < 160 chars)"
+                  required
                 />
               </Form.Group>
             </Card.Body>
@@ -188,6 +192,12 @@ export default function ArticleForm({ initialData, onSubmit, loading }: any) {
                       >
                         <FontAwesomeIcon icon={faTimes} />
                       </Button>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer"
+                        onChange={handleFileUpload}
+                      />
                     </div>
                   ) : (
                     <div className="py-5 text-muted">

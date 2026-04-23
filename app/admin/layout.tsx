@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Nav, Navbar, Dropdown, Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { faDashboard, faFileLines, faUser, faSignOutAlt, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faDashboard, faFileLines, faUser, faSignOutAlt, faBars, faBlog, faBook } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -13,9 +13,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const menuItems = [
     { name: 'Dashboard', icon: faDashboard, path: '/admin' },
     { name: 'Articles', icon: faFileLines, path: '/admin/articles' },
+    { name: 'Blogs', icon: faBlog, path: '/admin/blogs' },
+    { name: 'Resources', icon: faBook, path: '/admin/resources' },
   ];
 
-  const currentPathName = menuItems.find(item => item.path === pathname)?.name || 'Dashboard';
+  const currentPathName =
+    menuItems.find((item) => pathname === item.path || pathname.startsWith(`${item.path}/`))?.name || 'Dashboard';
 
   return (
     <div className="admin-wrapper" style={{ background: '#f4f6f9', minHeight: '100vh' }}>
@@ -74,14 +77,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 key={item.path}
                 as={Link} 
                 href={item.path}
-                className={`mb-2 rounded-3 p-3 d-flex align-items-center border-0 ${pathname === item.path ? 'bg-primary text-white shadow' : 'text-secondary-emphasis hover-sidebar'}`}
+                className={`mb-2 rounded-3 p-3 d-flex align-items-center border-0 ${pathname === item.path || pathname.startsWith(`${item.path}/`) ? 'bg-primary text-white shadow' : 'text-secondary-emphasis hover-sidebar'}`}
                 style={{ 
                   transition: 'all 0.2s',
-                  color: pathname === item.path ? '#fff' : '#a3b1cc',
+                  color: pathname === item.path || pathname.startsWith(`${item.path}/`) ? '#fff' : '#a3b1cc',
                   fontSize: '0.95rem'
                 }}
               >
-                <FontAwesomeIcon icon={item.icon} className="me-3" style={{ width: '20px', opacity: pathname === item.path ? 1 : 0.7 }} />
+                <FontAwesomeIcon icon={item.icon} className="me-3" style={{ width: '20px', opacity: pathname === item.path || pathname.startsWith(`${item.path}/`) ? 1 : 0.7 }} />
                 <span className="fw-medium">{item.name}</span>
               </Nav.Link>
             ))}

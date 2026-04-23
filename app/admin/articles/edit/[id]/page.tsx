@@ -27,13 +27,16 @@ export default function EditArticle() {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error('Failed to update article');
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to update article');
+      }
 
       router.push('/admin/articles');
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Error updating article');
+      alert((error as Error).message || 'Error updating article');
     } finally {
       setLoading(false);
     }

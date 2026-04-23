@@ -29,6 +29,19 @@ export async function PUT(request: Request, context: { params: Promise<{ slug: s
   try {
     const { slug } = await context.params;
     const postData = await request.json();
+    if (
+      !postData?.title ||
+      !postData?.shortDescription ||
+      !postData?.content ||
+      !postData?.metaTitle ||
+      !postData?.metaDescription ||
+      !postData?.imageUrl
+    ) {
+      return NextResponse.json(
+        { error: 'Title, short description, content, image, meta title and meta description are required.' },
+        { status: 400 }
+      );
+    }
     
     if (!fs.existsSync(dataFilePath)) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

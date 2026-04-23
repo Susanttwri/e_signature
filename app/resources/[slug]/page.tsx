@@ -25,13 +25,12 @@ export default function BlogPost() {
         .then(data => {
           setPost(data);
           // Fetch all posts to find related ones
-          return fetch('/api/posts');
+          return fetch('/api/posts').then((res) => res.json()).then((allPosts) => ({ allPosts, currentPost: data }));
         })
-        .then(res => res.json())
-        .then(allPosts => {
+        .then(({ allPosts, currentPost }) => {
           // Filter out current post and take first 3 as related
           const related = allPosts
-            .filter((p: any) => p.slug !== params.slug)
+            .filter((p: any) => p.slug !== params.slug && p.status === 'Published' && p.type === currentPost.type)
             .slice(0, 3);
           setRelatedPosts(related);
           setLoading(false);

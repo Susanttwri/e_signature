@@ -8,13 +8,15 @@ import { faFilePdf, faBook, faCode, faArrowRight, faDownload, faShieldHeart, faB
 export default function Resources() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const resourcePosts = posts.filter((p: any) => p.type === 'Resources');
+  const blogPosts = posts.filter((p: any) => p.type === 'Blog' || !p.type);
 
   useEffect(() => {
     fetch('/api/posts')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-           setPosts(data);
+           setPosts(data.filter((p: any) => p.status === 'Published'));
         }
         setLoading(false);
       })
@@ -65,6 +67,21 @@ export default function Resources() {
                 </Card>
               </Col>
             ))}
+            {resourcePosts
+              .slice(0, 6)
+              .map((resource: any) => (
+                <Col lg={4} md={6} className="mb-4" key={resource.id}>
+                  <Card className="resource-card h-100 shadow-sm border-0 p-4">
+                    <h5 className="fw-bold mb-2">{resource.title}</h5>
+                    <Card.Text className="text-muted small mb-3">
+                      {resource.shortDescription || 'Read the full resource to learn more.'}
+                    </Card.Text>
+                    <Link href={`/resources/${resource.slug}`} className="text-decoration-none fw-bold mt-auto text-primary">
+                      Read Resource <FontAwesomeIcon icon={faArrowRight} className="ms-1" />
+                    </Link>
+                  </Card>
+                </Col>
+              ))}
           </Row>
         </div>
 
@@ -83,7 +100,7 @@ export default function Resources() {
             </div>
           ) : (
             <Row>
-              {posts.length === 0 ? (
+              {blogPosts.length === 0 ? (
                 <Col>
                   <div className="text-center text-muted my-5 p-5 bg-white rounded-4 shadow-sm border border-dashed">
                     <h4>No posts found.</h4>
@@ -91,7 +108,9 @@ export default function Resources() {
                   </div>
                 </Col>
               ) : (
-                posts.map((post: any) => (
+                blogPosts
+                  .slice(0, 6)
+                  .map((post: any) => (
                   <Col lg={4} md={6} className="mb-4" key={post.id}>
                     <Card className="blog-card shadow-sm border-0 h-100 position-relative">
                       <div className="card-img-wrapper">
